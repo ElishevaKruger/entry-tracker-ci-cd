@@ -19,15 +19,18 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
 
-      # אם יש לך בדיקות יחידה (unit tests) מבוססות Python, תריץ אותן כאן, לדוגמה:
-      # - name: Run Python unit tests
-      #   run: |
-      #     pytest tests/
+      - name: Run unit test (curl)
+        run: |
+          nohup python app.py &
+          sleep 5
+          curl http://localhost:5000
 
       - name: Build Docker image
-        run: docker build -t entrytracker-app .
+        run: |
+          docker build -t entrytracker-app .
 
       - name: Run E2E tests using docker-compose
         run: |
